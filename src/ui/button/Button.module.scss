@@ -18,14 +18,14 @@
 	background-color: white;
 }
 
-.button_apply:hover {
-	background-color: #ffedab;
-}
-
 .button_clear:hover {
 	background-color: #000000;
 }
 
 .button_clear:hover div {
 	color: white;
+}
+
+.button_apply:hover {
+	background-color: #ffedab;
 }
