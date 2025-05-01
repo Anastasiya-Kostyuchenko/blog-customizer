@@ -16,7 +16,10 @@ export const useModalClose: UseModalClose = ({
 
 		const handleEvent = (e: MouseEvent | KeyboardEvent) => {
 			if (e instanceof MouseEvent) {
-				if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+				if (
+					containerRef.current &&
+					!containerRef.current.contains(e.target as Node)
+				) {
 					setClosed();
 				}
 			}

@@ -21,13 +21,15 @@ import { Select } from 'src/ui/select';
 import { Separator } from 'src/ui/separator';
 import { Text } from 'src/ui/text';
 
-type ArticleParamsForm = (props: {
+type ArticleParamsFormProps = {
 	setArticleStyleState: (articleState: ArticleStateType) => void;
-}) => JSX.Element;
+	title: string;
+};
 
-export const ArticleParamsForm: ArticleParamsForm = ({
+export const ArticleParamsForm = ({
 	setArticleStyleState,
-}) => {
+	title,
+}: ArticleParamsFormProps): JSX.Element => {
 	const [inputArticleStyleState, setInputArticleStyleState] =
 		useState<ArticleStateType>(defaultArticleState);
 
@@ -41,29 +43,28 @@ export const ArticleParamsForm: ArticleParamsForm = ({
 		containerRef,
 	});
 
-	const closeForm = useCallback(() => {
-		setIsOpened(false);
-	}, []);
-
-	const submitForm = useCallback((evt: React.FormEvent<HTMLFormElement>) => {
+	const submitForm = (evt: React.FormEvent<HTMLFormElement>) => {
 		evt.preventDefault();
 		setArticleStyleState(inputArticleStyleState);
-		closeForm();
-	}, [inputArticleStyleState, setArticleStyleState, closeForm]);
+		setIsOpened(false);
+	};
 
-	const resetForm = useCallback((evt: React.FormEvent) => {
+	const resetForm = (evt: React.FormEvent) => {
 		evt.preventDefault();
 		setInputArticleStyleState(defaultArticleState);
 		setArticleStyleState(defaultArticleState);
-		closeForm();
-	}, [setArticleStyleState, closeForm]);
+		setIsOpened(false);
+	};
 
-	const onOptionSelected = useCallback((optionName: keyof ArticleStateType) => (selected: OptionType) => {
-		setInputArticleStyleState(prevState => ({
-			...prevState,
-			[optionName]: selected,
-		}));
-	}, []);
+	const onOptionSelected = useCallback(
+		(optionName: keyof ArticleStateType) => (selected: OptionType) => {
+			setInputArticleStyleState((prevState) => ({
+				...prevState,
+				[optionName]: selected,
+			}));
+		},
+		[]
+	);
 
 	return (
 		<div ref={containerRef} className={styles.formContainer}>
@@ -71,8 +72,8 @@ export const ArticleParamsForm: ArticleParamsForm = ({
 			<aside
 				className={clsx(styles.container, isOpened && styles.container_open)}>
 				<form className={styles.form} onSubmit={submitForm} onReset={resetForm}>
-					<Text size={31} weight={800} uppercase>
-						Задайте параметры
+					<Text as='h2' size={31} weight={800} uppercase>
+						{title}
 					</Text>
 					<Select
 						title='Шрифт'
